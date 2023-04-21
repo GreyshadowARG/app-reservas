@@ -21,11 +21,11 @@ const usuarioSchema = new Schema({
     },
     reservas: {
         resPendientes: {
-            type: String,
+            type: Array,
             required: true
         },
         resAprobadas: {
-            type: String,
+            type: Array,
             required: true
         }
     },

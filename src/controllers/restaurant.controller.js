@@ -13,7 +13,8 @@ export const addRestaurant = async (req, res) => {
       reviews,
       puntajesAcumulados,
       puntajePromedio,
-      tags
+      tags,
+      imagenes
     } = req.body;
   
     const newRestaurant = new Restaurant({
@@ -27,7 +28,8 @@ export const addRestaurant = async (req, res) => {
       reviews: reviews,
       puntajesAcumulados,
       puntajePromedio: puntajePromedio,
-      tags
+      tags: tags,
+      imagenes: imagenes
     });
   
     const restaurantLoaded = await newRestaurant.save();
