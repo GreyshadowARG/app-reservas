@@ -2,57 +2,37 @@ import pkg from "mongoose";
 
 const { Schema, model } = pkg;
 
-const reviewSchema = new Schema({
-  fecha: {
-    type: String,
-    required: true,
-  },
-  usuario: {
-    type: String,
-    required: true,
-  },
-  comentario: {
-    type: String,
-    required: true,
-  },
-  puntaje: {
-    type: Number,
-    required: true,
-  },
-});
-
 const restaurantSchema = new Schema(
   {
-    nombre: {
+    name: {
       type: String,
       required: true,
     },
-    descripcion: {
+    description: {
       type: String,
       required: true,
     },
-    ciudad: {
+    city: {
       type: String,
       required: true,
     },
-    localidad: {
+    address: {
       type: String,
       required: true,
     },
-    calle: {
-      type: String,
-      required: true,
-    },
-    reservas: {
+    reservations: {
       type: Array,
       required: true,
     },
-    reviews: [reviewSchema],
-    puntajesAcumulados: {
+    reviews: {
       type: Array,
       required: true,
     },
-    puntajePromedio: {
+    ratingsArray: {
+      type: Array,
+      required: true,
+    },
+    ratingProm: {
       type: Number,
       required: true,
     },
@@ -60,7 +40,7 @@ const restaurantSchema = new Schema(
       type: Array,
       required: true,
     },
-    imagenes: {
+    imgs: {
       type: Array,
       required: true,
     },

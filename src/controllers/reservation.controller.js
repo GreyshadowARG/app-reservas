@@ -1,45 +1,67 @@
 import Restaurant from "../models/Restaurant.js";
 
 export const newReservation = async (req, res) => {
-  const { id, fecha, hora, personas, descuento } = req.body;
-  const restaurant = await Restaurant.findById(id);
-  const dbReservaArray = restaurant.reservas;
-  let fechaCount = 0;
-  let fechasArray = [];
-  dbReservaArray.forEach(function (arrayItem) {
-    var fecha = arrayItem.fecha;
-    fechasArray.push(fecha);
+  const { restaurantId, userId, date, user, time, peopleQty, promotion } = req.body;
+  const restaurant = await Restaurant.findById(restaurantId);
+  const dbReservationsArray = restaurant.reservations;
+  let timeCount = 0;
+  let timeArray = [];
+  dbReservationsArray.forEach(function (arrayItem) {
+    var time = arrayItem.time;
+    timeArray.push(time);
   });
-  fechasArray.forEach(function (element) {
-    if (element === fecha) {
-      fechaCount++;
+  timeArray.forEach(function (element) {
+    if (element === time) {
+      timeCount++;
     }
   });
-  if (fechaCount < 10) {
+  // Establecemos la cantidad de mesas disponibles en ese horario
+  if (timeCount < 10) {
     const reservationId = Math.floor(Math.random() * 1000000000);
-    const reserva = {
-      id: reservationId,
-      fecha: fecha,
-      hora: hora,
-      personas: personas,
-      descuentos: descuento,
+    const reservation = {
+      reservationId: reservationId,
+      userId: userId,
+      date: date,
+      user: user,
+      time: time,
+      peopleQty: peopleQty,
+      promotion: promotion,
     };
-    dbReservaArray.push(reserva);
-    const newReserva = {
-      reservas: dbReservaArray,
+    dbReservationsArray.push(reservation);
+    const newReservation = {
+      reservations: dbReservationsArray,
     };
-    await Restaurant.findByIdAndUpdate(restaurant, newReserva);
-    res.json(dbReservaArray);
+    await Restaurant.findByIdAndUpdate(restaurant, newReservation);
+    res.json(dbReservationsArray);
   } else {
-    res.json("No hay reservas disponibles")
-  }  
+    res.json("Horarios no disponible.")
+  }
 };
 
-export const checkAvailability = async (req, res) => {
-  const restaurant = await Restaurant.find();
-  const dbReservasArray = restaurant[0].reservas;
-  data.messages.forEach(function (message) {
-    console.log(message);
-  });
-  res.status(200).json(dbReservasArray.data);
-};
+export const deleteReservation = async (req, res) => {
+  const { restaurantId, reservationId } = req.params;
+  const restaurant = await Restaurant.findById(restaurantId);
+  const reservationsArray = restaurant.reservations
+  const index = reservationsArray.findIndex((num) => num === 7);
+
+
+  /*
+  function removeObjectWithId(reservationsArray, reservationId) {
+    const objWithIdIndex = reservationsArray.findIndex((obj) => obj.id === reservationId);
+  
+    if (objWithIdIndex > -1) {
+      reservationsArray.splice(objWithIdIndex, 1);
+    }
+  
+    return reservationsArray;
+  }
+  
+  removeObjectWithId(reservationsArray, reservationId);
+  */
+
+  const newReservation = {
+    reservations: reservationsArray
+  }
+  await Restaurant.findByIdAndUpdate(restaurant, newReservation)
+  res.status(200).json(reservationsArray)
+}

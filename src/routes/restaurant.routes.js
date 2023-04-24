@@ -6,5 +6,6 @@ const router = Router()
 // registro de usuario
 router.post('/addRestaurant', restaurantsController.addRestaurant);
 router.get('/getAllRestaurants', restaurantsController.getAllRestaurants);
+router.get('/getRestaurantById/:id', restaurantsController.getRestaurantById);
 
 export default router
