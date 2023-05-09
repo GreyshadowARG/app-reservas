@@ -1,4 +1,3 @@
-import e from "express";
 import Restaurant from "../models/Restaurant.js";
 
 export const addRestaurant = async (req, res) => {
@@ -44,4 +43,9 @@ export const getRestaurantById = async (req, res) => {
   const { id }  = req.params;
   const restaurant = await Restaurant.findById(id);
   res.json(restaurant);
+};
+
+export const prueba = async (req, res) => {
+  const { prueba }  = req.body;
+  res.json(prueba);
 };

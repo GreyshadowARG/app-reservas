@@ -7,5 +7,6 @@ const router = Router()
 router.post('/addRestaurant', restaurantsController.addRestaurant);
 router.get('/getAllRestaurants', restaurantsController.getAllRestaurants);
 router.get('/getRestaurantById/:id', restaurantsController.getRestaurantById);
+router.get('/prueba', restaurantsController.prueba);
 
 export default router
