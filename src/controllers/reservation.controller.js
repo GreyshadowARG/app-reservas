@@ -32,6 +32,7 @@ export const newReservation = async (req, res) => {
       reservations: dbReservationsArray,
     };
     await Restaurant.findByIdAndUpdate(restaurant, newReservation);
+    console.log("La reserva se ha realizado correctamente.")
     res.json(dbReservationsArray);
   } else {
     res.json("Horarios no disponible.")
@@ -43,8 +44,6 @@ export const deleteReservation = async (req, res) => {
   const restaurant = await Restaurant.findById(restaurantId);
   const reservationsArray = restaurant.reservations
   const index = reservationsArray.findIndex((num) => num === 7);
-
-
   /*
   function removeObjectWithId(reservationsArray, reservationId) {
     const objWithIdIndex = reservationsArray.findIndex((obj) => obj.id === reservationId);

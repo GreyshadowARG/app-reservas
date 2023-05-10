@@ -30,7 +30,7 @@ export const addRestaurant = async (req, res) => {
   });
 
   const restaurantLoaded = await newRestaurant.save();
-
+  console.log(`Se ha cargado el restaurant ${name} correctamente.` )
   res.status(201).json(restaurantLoaded);
 };
 
@@ -47,5 +47,6 @@ export const getRestaurantById = async (req, res) => {
 
 export const prueba = async (req, res) => {
   const { prueba }  = req.body;
+  console.log(prueba)
   res.json(prueba);
 };
