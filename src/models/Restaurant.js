@@ -29,7 +29,7 @@ const restaurantSchema = new Schema(
           time: Number,
           peopleQty: Number,
           promotionCode: String,
-          state: Boolean,
+          state: String,
         },
       ],
     },

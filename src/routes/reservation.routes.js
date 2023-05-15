@@ -8,7 +8,6 @@ router.delete('/deleteReservation/:restaurantId/:reservationId', reservationCont
 router.get('/reservationsByRestId/:restaurantId', reservationController.reservationsByRestId);
 router.get('/checkAvailTime', reservationController.checkAvailTime);
 
-//router.delete('/deleteReservationById/:restaurantId/:reservationId', reservationController.deleteReservation);
 
 
 export default router

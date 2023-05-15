@@ -21,11 +21,12 @@ export const newReservation = async (req, res, next) => {
       $push: { reservations: newReservation },
     });
     console.log("Reserva cargada exitosamente.");
-    res.status(200).json(newReservation);
   } catch (err) {
     next(err);
   }
+  res.status(200).json("Reserva exitosa");
 };
+
 
 export const deleteReservation = async (req, res, next) => {
   const { restaurantId, reservationId } = req.params;
@@ -38,6 +39,7 @@ export const deleteReservation = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
+ 
 };
 
 export const reservationsByRestId = async (req, res) => {
