@@ -21,12 +21,27 @@ const restaurantSchema = new Schema(
       required: true,
     },
     reservations: {
-      type: Array,
-      required: true,
+      type: [
+        {
+          userId: String,
+          user: String,
+          date: String,
+          time: Number,
+          peopleQty: Number,
+          promotionCode: String,
+          state: Boolean,
+        },
+      ],
     },
     reviews: {
-      type: Array,
-      required: true,
+      type: [
+        {
+          userId: String,
+          user: String,
+          rating: Number,
+          comment: String,
+        },
+      ],
     },
     ratingsArray: {
       type: Array,
@@ -34,6 +49,8 @@ const restaurantSchema = new Schema(
     },
     ratingProm: {
       type: Number,
+      min: 0,
+      max: 5,
       required: true,
     },
     tags: {

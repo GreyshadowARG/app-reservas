@@ -1,43 +1,55 @@
 import Restaurant from "../models/Restaurant.js";
+import Review from "../models/Review.js";
 
 // Cargar nueva review
-export const addReview = async (req, res) => {
-  const { restaurantId, userId, user, rating, comment } = req.body;
-  const restaurant = await Restaurant.findById(restaurantId);
-  const dbReviewsArray = restaurant.reviews;
-  const dbPuntajesAcumuladosArray = restaurant.ratingsArray;
+export const newReview = async (req, res, next) => {
+  const { restaurantId } = req.params;
+  const { userId, user, rating, comment } = req.body;
 
-  function promedioPuntaje(dbPuntajesAcumuladosArray) {
-    var i = 0,
-      summ = 0,
-      ArrayLen = dbPuntajesAcumuladosArray.length;
-    while (i < ArrayLen) {
-      summ = summ + dbPuntajesAcumuladosArray[i++];
+  try {
+    const restaurant = await Restaurant.findById(restaurantId);
+    const dbPuntajesAcumuladosArray = restaurant.ratingsArray;
+
+    function promedioPuntaje(dbPuntajesAcumuladosArray) {
+      var i = 0,
+        summ = 0,
+        ArrayLen = dbPuntajesAcumuladosArray.length;
+      while (i < ArrayLen) {
+        summ = summ + dbPuntajesAcumuladosArray[i++];
+      }
+      const prom = summ / ArrayLen;
+      return Math.round(prom * 10) / 10;
     }
-    const prom = summ / ArrayLen;
-    return Math.round(prom * 10) / 10;
+
+    const today = new Date();
+    const date = `${today.getDay()}/${today.getMonth()}/${today.getFullYear()} - ${today.getHours()}:${today.getUTCMinutes()} hs`;
+    const userReview = new Review({
+      userId: userId,
+      date: date,
+      user: user,
+      rating: rating,
+      comment: comment,
+    });
+
+    dbPuntajesAcumuladosArray.push(rating);
+    const nuevoPromedio = promedioPuntaje(dbPuntajesAcumuladosArray);
+
+    try {
+      await Restaurant.findByIdAndUpdate(restaurantId, {
+        $push: { reviews: userReview },
+        $set: {
+          ratingsArray: dbPuntajesAcumuladosArray,
+          ratingProm: nuevoPromedio,
+        },
+      });
+      console.log("Review cargada exitosamente.")
+      res.json(200);
+    } catch (err) {
+      next(err);
+    }
+  } catch (err) {
+    next(err);
   }
-
-  const today = new Date();
-  const date = `${today.getDay()}/${today.getMonth()}/${today.getFullYear()} - ${today.getHours()}:${today.getUTCMinutes()} hs`;
-  const userReview = {
-    userId: userId,
-    date: date,
-    user: user,
-    rating: rating,
-    comment: comment,
-  };
-  dbPuntajesAcumuladosArray.push(rating);
-  dbReviewsArray.push(userReview);
-  const nuevoPromedio = promedioPuntaje(dbPuntajesAcumuladosArray);
-  const newReview = {
-    reviews: dbReviewsArray,
-    ratingsArray: dbPuntajesAcumuladosArray,
-    ratingProm: nuevoPromedio,
-  };
-
-  await Restaurant.findByIdAndUpdate(restaurant, newReview);
-  res.status(200).json(dbReviewsArray);
 };
 
 // Ver todas las reviews
@@ -67,8 +79,10 @@ export const deleteReviewById = async (req, res) => {
   const restaurant = await Restaurant.findById(restaurantId);
   const reviews = restaurant.reviews;
   reviews.forEach((review) => {
-    review._id === reviewId ? console.log("Coincide") : console.log("No coincide")
-  /*
+    review._id === reviewId
+      ? console.log("Coincide")
+      : console.log("No coincide");
+    /*
     if (review._id === reviewId) {
       console.log("coincide");
     }else{

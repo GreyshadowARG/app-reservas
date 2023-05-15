@@ -1,4 +1,4 @@
-import Usuario from '../models/Usuario.js'
+import Usuario from '../models/User.js'
 import jwt from 'jsonwebtoken'
 import bcrypt from "bcrypt";
 import "dotenv/config";
@@ -9,14 +9,14 @@ export const handleLogin =  async (req, res) => {
     if (!email || !password)
         return res
             .status(400)
-            .json({ message: "Username and password are required." });
+            .json({ message: "Se requiere ingresar email y password" });
     
     const foundUser = await Usuario.findOne({ email: email }).exec();
     if (!foundUser) return res.sendStatus(401); //Unauthorized
     // evaluate password
     const match = await bcrypt.compare(password, foundUser.password);
     if (match) {
-        const userLogged = `Usuario ${foundUser.nombre} ${foundUser.apellido} logeado`
+        const userLogged = `Usuario ${foundUser.firstName} ${foundUser.lastName} logeado`
 
         // create JWTs
         const accessToken = jwt.sign(
@@ -29,7 +29,7 @@ export const handleLogin =  async (req, res) => {
             { expiresIn: "600s" }
             );
             const refreshToken = jwt.sign(
-            { id: foundUser.id },
+            { id: foundUser.id }, 
             process.env.REFRESH_TOKEN_SECRET,
             { expiresIn: "1d" }
             );

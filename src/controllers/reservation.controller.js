@@ -1,5 +1,63 @@
 import Restaurant from "../models/Restaurant.js";
+import Reservation from "../models/Reservation.js";
 
+export const newReservation = async (req, res, next) => {
+  const { restaurantId } = req.params;
+
+  const { userId, user, date, time, peopleQty, promotionCode, state } =
+    req.body;
+
+  const newReservation = new Reservation({
+    userId: userId,
+    user: user,
+    date: date,
+    time: time,
+    peopleQty: peopleQty,
+    promotionCode: promotionCode,
+    state: state,
+  });
+  try {
+    await Restaurant.findByIdAndUpdate(restaurantId, {
+      $push: { reservations: newReservation },
+    });
+    console.log("Reserva cargada exitosamente.");
+    res.status(200).json(newReservation);
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const deleteReservation = async (req, res, next) => {
+  const { restaurantId, reservationId } = req.params;
+  try {
+    const restaurant = await Restaurant.findByIdAndUpdate(restaurantId, {
+      $pull: { reservations: { _id: reservationId } },
+    });
+    console.log("Reserva eliminada")
+    res.status(200).json(restaurant);
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const reservationsByRestId = async (req, res) => {
+  const restaurantId = req.params;
+  const reservations = await Reservation.findById();
+  res.status(200).json(reservations);
+};
+
+export const checkAvailTime = async (req, res) => {
+  const { restaurantId, date, time } = req.body;
+  const reservation = await Reservation.findOne({
+    restaurantId: restaurantId,
+    date: date,
+    time: time,
+  });
+
+  res.status(200).json(reservation);
+};
+
+/*
 export const newReservation = async (req, res) => {
   const { restaurantId, userId, date, user, time, peopleQty, promotion } = req.body;
   const restaurant = await Restaurant.findById(restaurantId);
@@ -38,7 +96,9 @@ export const newReservation = async (req, res) => {
     res.json("Horarios no disponible.")
   }
 };
+*/
 
+/*
 export const deleteReservation = async (req, res) => {
   const { restaurantId, reservationId } = req.params;
   const restaurant = await Restaurant.findById(restaurantId);
@@ -56,7 +116,7 @@ export const deleteReservation = async (req, res) => {
   }
   
   removeObjectWithId(reservationsArray, reservationId);
-  */
+
 
   const newReservation = {
     reservations: reservationsArray
@@ -64,3 +124,4 @@ export const deleteReservation = async (req, res) => {
   await Restaurant.findByIdAndUpdate(restaurant, newReservation)
   res.status(200).json(reservationsArray)
 }
+*/

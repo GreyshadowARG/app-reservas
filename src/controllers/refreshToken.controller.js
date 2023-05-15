@@ -1,4 +1,4 @@
-import Usuario from '../models/Usuario.js';
+import Usuario from '../models/User.js';
 import jwt from 'jsonwebtoken';
 
 const handleRefreshToken = async (req, res) => {

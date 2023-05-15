@@ -4,7 +4,7 @@ import * as reviewsController from "../controllers/reviews.controller.js"
 const router = Router()
 
 // rutas reviews
-router.post('/addReview', reviewsController.addReview);
+router.post('/newReview/:restaurantId', reviewsController.newReview);
 router.get('/getAllReviews', reviewsController.getAllReviews);
 router.get('/deleteReviewById/:restaurantId/:reviewId', reviewsController.deleteReviewById);
 

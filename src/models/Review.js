@@ -4,7 +4,7 @@ const { Schema, model } = pkg;
 
 const reviewSchema = new Schema(
   {
-    date: {
+    userId: {
       type: String,
       required: true,
     },
@@ -12,17 +12,17 @@ const reviewSchema = new Schema(
       type: String,
       required: true,
     },
-    comment: {
-      type: String,
-      required: true,
-    },
     rating: {
       type: Number,
       required: true,
     },
+    comment: {
+      type: String,
+      required: true,
+    }
   }
 );
 
-const Reviews = model("Review", reviewSchema);
+const Review = model("Review", reviewSchema);
 
-export default Reviews
+export default Review
