@@ -49,14 +49,31 @@ export const reservationsByRestId = async (req, res) => {
 };
 
 export const checkAvailTime = async (req, res) => {
-  const { restaurantId, date, time } = req.body;
-  const reservation = await Reservation.findOne({
-    restaurantId: restaurantId,
-    date: date,
-    time: time,
-  });
-
-  res.status(200).json(reservation);
+  const { restaurantId } = req.params;
+  const { date, time } = req.body;
+  const dateMatchArray = []
+  let counter = 0
+  try {
+    const restaurant = await Restaurant.findById(restaurantId)
+    const reservations = restaurant.reservations
+    reservations.forEach((reservation) => {
+      if(reservation.date === date){
+        dateMatchArray.push(reservation)
+      }
+    })
+    dateMatchArray.forEach((element) => {
+      if(element.time === time){
+        counter++
+      }
+    })
+  } catch (err) {
+    next(err)
+  }
+  if(counter < 10){
+    res.status(200).json("Horario disponible");
+  } else {
+    res.status(404).json("Horario no disponible");
+  }
 };
 
 /*
