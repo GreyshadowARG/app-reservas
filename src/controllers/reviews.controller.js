@@ -43,7 +43,7 @@ export const newReview = async (req, res, next) => {
         },
       });
       console.log("Review cargada exitosamente.")
-      res.json(200);
+      res.status(200);
     } catch (err) {
       next(err);
     }
@@ -70,7 +70,7 @@ export const addPuntaje = async (req, res) => {
     puntajePromedio: Number(promPuntaje),
   };
   await Restaurant.findByIdAndUpdate(restaurant, finalPuntaje);
-  res.status(200).json();
+  res.status(200)
 };
 
 // Eliminar una review por id
@@ -90,7 +90,7 @@ export const deleteReviewById = async (req, res) => {
     }
   */
   });
-  res.json(reviews);
+  res.status(200).json(reviews);
 
   //const reviewById = reviews.findById(reviewId)
 

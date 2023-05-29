@@ -7,6 +7,7 @@ router.post('/newReservation/:restaurantId', reservationController.newReservatio
 router.delete('/deleteReservation/:restaurantId/:reservationId', reservationController.deleteReservation);
 router.get('/reservationsByRestId/:restaurantId', reservationController.reservationsByRestId);
 router.get('/checkAvailTime/:restaurantId', reservationController.checkAvailTime);
+router.get('/checkAvailPeopleQty/:restaurantId', reservationController.checkAvailPeopleQty);
 
 
 

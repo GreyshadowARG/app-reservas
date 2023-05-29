@@ -33,6 +33,15 @@ const restaurantSchema = new Schema(
         },
       ],
     },
+    menu: {
+      type: [
+        {
+          title: String,
+          description: String,
+          price: Number
+        },
+      ],
+    },
     reviews: {
       type: [
         {
